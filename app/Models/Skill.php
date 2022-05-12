@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Skill extends Model
 {
-    protected $timestamps = false;
+    public $timestamps = false;
 
     public function freelancers(): BelongsToMany
     {
