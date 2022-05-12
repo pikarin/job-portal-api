@@ -13,9 +13,11 @@ class ViewJobTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function users_can_view_published_jobs()
+    public function freelancers_can_view_published_jobs()
     {
         $this->seed(SkillTableSeeder::class);
+
+        $this->actingAsFreelancer();
 
         JobFactory::new()->published()->count(50)->create();
 

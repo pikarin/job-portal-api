@@ -14,6 +14,7 @@ class RegisterHireManagerRequest extends StoreHireManagerRequest
         return parent::rules() + [
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'confirmed'],
+            'timezone' => ['required', 'string', 'timezone'],
         ];
     }
 }

@@ -21,6 +21,8 @@ class ProposalResource extends JsonResource
             'status' => $this->resource->status,
             'payment_amount' => (int) $this->resource->payment_amount,
             'freelancer' => new FreelancerResource($this->resource->freelancer->user),
+            'created_at' => $this->resource->created_at->timezone(auth()->user()->timezone),
+            'updated_at' => $this->resource->updated_at->timezone(auth()->user()->timezone),
         ];
     }
 }

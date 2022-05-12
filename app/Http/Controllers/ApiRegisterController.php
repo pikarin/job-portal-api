@@ -30,11 +30,11 @@ class ApiRegisterController extends Controller
             DB::beginTransaction();
 
             $user = $createUserAction->execute(
-                new UserData(...$request->safe(['email', 'password']))
+                new UserData(...$request->safe(['email', 'password', 'timezone']))
             );
 
             $freelancerRequestData = ['user_id' => $user->id]
-                + $request->safe()->except(['email', 'password']);
+                + $request->safe()->except(['email', 'password', 'timezone']);
 
             $createFreelancerAction->execute(
                 new FreelancerData(...$freelancerRequestData)
@@ -74,11 +74,11 @@ class ApiRegisterController extends Controller
             DB::beginTransaction();
 
             $user = $createUserAction->execute(
-                new UserData(...$request->safe(['email', 'password']))
+                new UserData(...$request->safe(['email', 'password', 'timezone']))
             );
 
             $hireManagerRequestData = ['user_id' => $user->id]
-                + $request->safe()->except(['email', 'password']);
+                + $request->safe()->except(['email', 'password', 'timezone']);
 
             $createHireManagerAction->execute(
                 new HireManagerData(...$hireManagerRequestData)

@@ -20,9 +20,9 @@ Route::post('/register/hire-managers/{user}', [ApiRegisterController::class, 'hi
 
 Route::post('/login', [ApiLoginController::class, 'login']);
 
-Route::get('/jobs', [JobController::class, 'index']);
-
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/jobs', [JobController::class, 'index']);
+
     Route::get('/profile/freelancer', [ProfileController::class, 'freelancer']);
     Route::get('/profile/hire-manager', [ProfileController::class, 'hireManager']);
 

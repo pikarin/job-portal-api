@@ -224,6 +224,7 @@ class ApiRegisterTest extends TestCase
             'password_confirmation' => 'secretpassword',
             'name' => 'New Freelancer',
             'location' => 'Bandung',
+            'timezone' => 'Asia/Jakarta',
             'description' => 'I am a freelancer',
         ], $overrides);
     }
@@ -235,7 +236,8 @@ class ApiRegisterTest extends TestCase
             'password' => 'securepassword',
             'password_confirmation' => 'securepassword',
             'name' => 'New Hire Manager',
-            'location' => 'Jakarta',
+            'location' => 'Singapore',
+            'timezone' => 'Asia/Singapore',
             'description' => 'I am a hire manager',
             'company_name' => 'Acme Inc',
         ], $overrides);

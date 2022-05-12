@@ -13,12 +13,14 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $id
  * @property string $email
  * @property string $password
- * @property \App\Models\HireManager|null $hire_manager
- * @property \App\Models\HireManager|null $hireManager
- * @property \App\Models\Freelancer|null $freelancer
+ * @property string $timezone
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $email_verified_at
+ *
+ * @property \App\Models\HireManager|null $hire_manager
+ * @property \App\Models\HireManager|null $hireManager
+ * @property \App\Models\Freelancer|null $freelancer
  */
 class User extends Authenticatable
 {
