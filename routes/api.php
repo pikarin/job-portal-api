@@ -6,9 +6,11 @@ use App\Http\Controllers\ApiRegisterController;
 use App\Http\Controllers\AttachFreelancerSkillsController;
 use App\Http\Controllers\DraftJobController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobProposalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublishJobController;
 use App\Http\Controllers\ShowSkillsController;
+use App\Http\Controllers\SubmitJobProposalController;
 use App\Http\Controllers\ViewHireManagerJobsController;
 
 Route::post('/register/freelancers', [ApiRegisterController::class, 'freelancer']);
@@ -30,10 +32,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['auth:sanctum', 'freelancer'])->group(function () {
     Route::post('/freelancer/skills', AttachFreelancerSkillsController::class);
+
+    Route::post('/jobs/{job}/proposals', SubmitJobProposalController::class);
 });
 
 Route::middleware(['auth:sanctum', 'hire-manager'])->group(function () {
     Route::get('/jobs/hire-manager', ViewHireManagerJobsController::class);
+    Route::get('/jobs/{job}/proposals', [JobProposalController::class, 'index']);
+    Route::put('/jobs/{job}/proposals/{proposal}/{status}', [JobProposalController::class, 'update'])
+        ->whereIn('status', ['accepted', 'rejected', 'finished']);
 
     Route::post('/jobs/draft', [DraftJobController::class, 'store']);
     Route::post('/jobs/draft/{job}', [DraftJobController::class, 'update']);

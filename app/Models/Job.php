@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property \App\Models\HireManager $hire_manager
  * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Skill> $skills
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Proposal> $proposals
  */
 class Job extends Model
 {
@@ -37,5 +39,10 @@ class Job extends Model
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(Skill::class);
+    }
+
+    public function proposals(): HasMany
+    {
+        return $this->hasMany(Proposal::class);
     }
 }
