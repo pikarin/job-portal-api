@@ -26,6 +26,8 @@ class JobResource extends JsonResource
             'duration' => $this->resource->duration,
             'payment_amount' => $this->resource->payment_amount,
             'skills' => SkillResource::collection($this->whenLoaded('skills')),
+            'created_at' => $this->resource->created_at,
+            'updated_at' => $this->resource->updated_at,
         ];
     }
 }
