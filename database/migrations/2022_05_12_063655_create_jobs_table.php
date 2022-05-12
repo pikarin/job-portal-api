@@ -18,10 +18,10 @@ return new class extends Migration
             $table->foreignId('hire_manager_id')->constrained('hire_managers');
             $table->string('status');
             $table->string('title');
-            $table->text('description');
-            $table->string('complexity');
-            $table->string('duration');
-            $table->bigInteger('payment_amount')->unsigned();
+            $table->text('description')->nullable();
+            $table->string('complexity')->nullable();
+            $table->string('duration')->nullable();
+            $table->bigInteger('payment_amount')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

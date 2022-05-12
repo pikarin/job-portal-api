@@ -17,10 +17,10 @@ class SkillTableSeeder extends Seeder
     {
         DB::table('skills')->insert([
             ['name' => 'PHP'],
-            ['name' => 'JavaScript'],
-            ['name' => 'Java'],
+            ['name' => 'Laravel'],
+            ['name' => 'MySQL'],
             ['name' => 'Python'],
-            ['name' => 'Ruby'],
+            ['name' => 'Javascript'],
             ['name' => 'C++'],
             ['name' => 'C'],
             ['name' => 'C#'],
