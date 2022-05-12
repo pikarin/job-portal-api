@@ -20,5 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('skills', ShowSkillsController::class);
 
+});
+
+Route::middleware(['auth:sanctum', 'freelancer'])->group(function () {
     Route::post('/freelancer/skills', AttachFreelancerSkillsController::class);
 });
