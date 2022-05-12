@@ -9,7 +9,7 @@
 
 This project using laravel sails for easy dev environment.
 
-Make sure docker is installed on your machine, then run this command in your terminal:
+Make sure [docker](https://www.docker.com/products/docker-desktop) is installed on your machine, then run this command in your terminal:
 
 make a copy of .env file
 ```sh
