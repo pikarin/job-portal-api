@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateFreelancerAction;
+use App\Actions\CreateHireManagerAction;
+use App\Actions\CreateUserAction;
+use App\DataTransferObjects\FreelancerData;
+use App\DataTransferObjects\HireManagerData;
+use App\DataTransferObjects\UserData;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,20 +20,25 @@ use Illuminate\Validation\ValidationException;
 
 class ApiRegisterController extends Controller
 {
-    public function freelancer(RegisterFreelancerRequest $request)
-    {
+    public function freelancer(
+        RegisterFreelancerRequest $request,
+        CreateUserAction $createUserAction,
+        CreateFreelancerAction $createFreelancerAction,
+    ) {
+
         try {
             DB::beginTransaction();
 
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-            $user->freelancer()->create([
-                'name' => $request->name,
-                'location' => $request->location,
-                'description' => $request->description,
-            ]);
+            $user = $createUserAction->execute(
+                new UserData(...$request->safe(['email', 'password']))
+            );
+
+            $freelancerRequestData = ['user_id' => $user->id]
+                + $request->safe()->except(['email', 'password']);
+
+            $createFreelancerAction->execute(
+                new FreelancerData(...$freelancerRequestData)
+            );
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -38,38 +49,40 @@ class ApiRegisterController extends Controller
         return response()->json(['message' => 'Successfully registered'], 201);
     }
 
-    public function freelancerUpdate(StoreFreelancerRequest $request, User $user)
-    {
+    public function freelancerUpdate(
+        StoreFreelancerRequest $request,
+        CreateFreelancerAction $createFreelancerAction,
+        User $user,
+    ) {
         if ($user->freelancer()->exists()) {
-            throw ValidationException::withMessages([
-                'user' => ['You are already a freelancer'],
-            ]);
+            $this->throwErrorResponse('You are already a freelancer');
         }
 
-        $user->freelancer()->create([
-            'name' => $request->name,
-            'location' => $request->location,
-            'description' => $request->description,
-        ]);
+        $requestData = $request->validated() + ['user_id' => $user->id];
+
+        $createFreelancerAction->execute(new FreelancerData(...$requestData));
 
         return response()->json(['message' => 'Successfully registered'], 201);
     }
 
-    public function hireManager(RegisterHireManagerRequest $request)
-    {
+    public function hireManager(
+        RegisterHireManagerRequest $request,
+        CreateUserAction $createUserAction,
+        CreateHireManagerAction $createHireManagerAction,
+    ) {
         try {
             DB::beginTransaction();
 
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-            $user->hireManager()->create([
-                'name' => $request->name,
-                'location' => $request->location,
-                'description' => $request->description,
-                'company_name' => $request->company_name,
-            ]);
+            $user = $createUserAction->execute(
+                new UserData(...$request->safe(['email', 'password']))
+            );
+
+            $hireManagerRequestData = ['user_id' => $user->id]
+                + $request->safe()->except(['email', 'password']);
+
+            $createHireManagerAction->execute(
+                new HireManagerData(...$hireManagerRequestData)
+            );
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -80,21 +93,31 @@ class ApiRegisterController extends Controller
         return response()->json(['message' => 'Successfully registered'], 201);
     }
 
-    public function hireManagerUpdate(StoreHireManagerRequest $request, User $user)
-    {
+    public function hireManagerUpdate(
+        StoreHireManagerRequest $request,
+        CreateHireManagerAction $createHireManagerAction,
+        User $user,
+    ) {
         if ($user->hireManager()->exists()) {
-            throw ValidationException::withMessages([
-                'user' => ['You are already a hire manager'],
-            ]);
+            $this->throwErrorResponse('You are already a hire manager');
         }
 
-        $user->hireManager()->create([
-            'name' => $request->name,
-            'location' => $request->location,
-            'description' => $request->description,
-            'company_name' => $request->company_name,
-        ]);
+        $requestData = $request->validated() + ['user_id' => $user->id];
+
+        $createHireManagerAction->execute(new HireManagerData(...$requestData));
 
         return response()->json(['message' => 'Successfully registered'], 201);
+    }
+
+    /**
+     * Throw validation exception with custom messages.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function throwErrorResponse(string $message)
+    {
+        throw ValidationException::withMessages([
+            'user' => [$message],
+        ]);
     }
 }
