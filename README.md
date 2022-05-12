@@ -1,5 +1,8 @@
 # MX100 Freelancer Job Portal API
 
+## Database Schema
+![database schema](https://gitlab.com/aditia1/ajobthing-technical-test/-/raw/main/database-schema.png)
+
 ## How to run
 
 ### Using docker
