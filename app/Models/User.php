@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $password
  * @property \App\Models\HireManager|null $hire_manager
+ * @property \App\Models\HireManager|null $hireManager
  * @property \App\Models\Freelancer|null $freelancer
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
