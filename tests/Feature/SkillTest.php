@@ -1,35 +1,28 @@
 <?php
 
-namespace Tests\Feature;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\seed;
 
 use Database\Factories\UserFactory;
 use Database\Seeders\SkillTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
 
-class SkillTest extends TestCase
+uses(RefreshDatabase::class);
+
+test('authenticated users can see available skills', function ()
 {
-    use RefreshDatabase;
+    seed(SkillTableSeeder::class);
 
-    /** @test */
-    public function authenticated_users_can_see_available_skills()
-    {
-        $this->seed(SkillTableSeeder::class);
+    actingAsFreelancer();
 
-        Sanctum::actingAs(UserFactory::new()->create());
+    $response = getJson('/api/skills')->assertStatus(200);
 
-        $response = $this->getJson('/api/skills');
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'name',
-                ],
+    $response->assertJsonStructure([
+        'data' => [
+            '*' => [
+                'id',
+                'name',
             ],
-        ]);
-    }
-}
+        ],
+    ]);
+});

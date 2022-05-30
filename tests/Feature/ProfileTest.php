@@ -1,79 +1,68 @@
 <?php
 
-namespace Tests\Feature;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+use function Pest\Laravel\seed;
 
-use App\Models\User;
-use Database\Factories\FreelancerFactory;
-use Database\Factories\UserFactory;
 use Database\Seeders\SkillTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
 
-class ProfileTest extends TestCase
+uses(RefreshDatabase::class);
+
+test('freelancers can see their profile', function ()
 {
-    use RefreshDatabase;
+    $user = actingAsFreelancer();
 
-    /** @test */
-    public function freelancers_can_see_their_profile()
-    {
-        $user = $this->actingAsFreelancer();
+    $response = getJson('/api/profile/freelancer')->assertStatus(200);
 
-        $response = $this->getJson('/api/profile/freelancer');
+    $response->assertJson([
+        'data' => [
+            'id' => $user->id,
+            'email' => $user->email,
+            'name' => $user->freelancer->name,
+            'description' => $user->freelancer->description,
+            'location' => $user->freelancer->location,
+        ],
+    ]);
+});
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'data' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'name' => $user->freelancer->name,
-                'description' => $user->freelancer->description,
-                'location' => $user->freelancer->location,
-            ],
+test('freelancers can add skills to their profile', function ()
+{
+    seed(SkillTableSeeder::class);
+
+    $user = actingAsFreelancer();
+
+    $skillIds = [1, 2, 3];
+
+    $response = postJson('/api/freelancer/skills', [
+        'skills' => $skillIds,
+    ]);
+
+    $response->assertStatus(201);
+
+    foreach ($skillIds as $skillId) {
+        assertDatabaseHas('freelancer_skill', [
+            'freelancer_id' => $user->freelancer->id,
+            'skill_id' => $skillId,
         ]);
     }
+});
 
-    /** @test */
-    public function freelancers_can_add_skills_to_their_profile()
-    {
-        $this->seed(SkillTableSeeder::class);
+test('hire managers can see their profile', function ()
+{
+    $user = actingAsHireManager();
 
-        $user = $this->actingAsFreelancer();
+    $response = getJson('/api/profile/hire-manager')->assertStatus(200);
 
-        $skillIds = [1, 2, 3];
-
-        $response = $this->postJson('/api/freelancer/skills', [
-            'skills' => $skillIds,
-        ]);
-
-        $response->assertStatus(201);
-
-        foreach ($skillIds as $skillId) {
-            $this->assertDatabaseHas('freelancer_skill', [
-                'freelancer_id' => $user->freelancer->id,
-                'skill_id' => $skillId,
-            ]);
-        }
-    }
-
-    /** @test */
-    public function hire_managers_can_see_their_profile()
-    {
-        $user = $this->actingAsHireManager();
-
-        $response = $this->getJson('/api/profile/hire-manager');
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'data' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'name' => $user->hireManager->name,
-                'description' => $user->hireManager->description,
-                'location' => $user->hireManager->location,
-                'company_name' => $user->hireManager->company_name,
-            ],
-        ]);
-    }
-}
+    $response->assertJson([
+        'data' => [
+            'id' => $user->id,
+            'email' => $user->email,
+            'name' => $user->hireManager->name,
+            'description' => $user->hireManager->description,
+            'location' => $user->hireManager->location,
+            'company_name' => $user->hireManager->company_name,
+        ],
+    ]);
+});
