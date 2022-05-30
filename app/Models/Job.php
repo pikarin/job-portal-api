@@ -24,8 +24,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  *
  * @property \App\Models\HireManager $hire_manager
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Skill> $skills
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Proposal> $proposals
+ * @property \Illuminate\Database\Eloquent\Collection<int,\App\Models\Skill> $skills
+ * @property \Illuminate\Database\Eloquent\Collection<int,\App\Models\Proposal> $proposals
  */
 class Job extends Model
 {

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property int $id
  * @property int $name
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Freelancer> $freelancers
+ * @property \Illuminate\Database\Eloquent\Collection<int,\App\Models\Freelancer> $freelancers
  */
 class Skill extends Model
 {

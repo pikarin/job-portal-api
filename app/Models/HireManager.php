@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
  * @property \App\Models\User $user
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
+ * @property \Illuminate\Database\Eloquent\Collection<int,\App\Models\Job> $jobs
  */
 class HireManager extends Model
 {

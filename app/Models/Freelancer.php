@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \App\Models\User $user
  * @property string $location
  * @property string $description
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Skill> $skills
+ * @property \Illuminate\Database\Eloquent\Collection<int,\App\Models\Skill> $skills
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
