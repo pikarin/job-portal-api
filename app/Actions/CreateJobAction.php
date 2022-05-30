@@ -14,7 +14,6 @@ class CreateJobAction
             'hire_manager_id' => $jobData->hire_manager_id,
             'title' => $jobData->title,
             'status' => $jobData->status,
-            'title' => $jobData->title,
             'description' => $jobData->description,
             'complexity' => $jobData->complexity,
             'duration' => $jobData->duration,
