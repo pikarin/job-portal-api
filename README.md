@@ -1,7 +1,6 @@
-# MX100 Freelancer Job Portal API
+# Freelancer Job Portal API
 
 ## Database Schema
-![database schema](https://gitlab.com/aditia1/ajobthing-technical-test/-/raw/main/database-schema.png)
 
 ## How to run
 
@@ -14,6 +13,16 @@ Make sure [docker](https://www.docker.com/products/docker-desktop) is installed 
 make a copy of .env file
 ```sh
 cp .env.example .env
+```
+
+install composer dependencies
+```sh
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
 ```
 
 spin up docker container
@@ -36,7 +45,7 @@ seed database with dummy data
 ./vendor/bin/sail artisan db:seed
 ```
 
-You can access the application at: http://localhost:8000.
+You can access the application at: http://localhost:8080.
 
 Laravel sail documentation: [https://laravel.com/docs/9.x/sail](https://laravel.com/docs/9.x/sail)
 

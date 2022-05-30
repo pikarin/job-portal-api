@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return 'This is a technical test for A Job Thing.';
+    return 'Welcome to Freelancers Job Portal API.';
 });
